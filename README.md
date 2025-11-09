@@ -116,7 +116,86 @@ Obtain your eBay API credentials from the [eBay Developer Portal](https://develo
 
 For more details on the configuration migration, see [CONFIGURATION_MIGRATION.md](CONFIGURATION_MIGRATION.md).
 
-### 3. Environment Variables (Optional)
+### 3. OAuth Configuration
+
+#### Setting Up OAuth Callback
+
+The package provides public OAuth endpoints for eBay authentication:
+
+**Available OAuth Endpoints**:
+- **Callback URL**: `https://yourdomain.com/ebay/oauth/callback`
+- **Accepted URL**: `https://yourdomain.com/ebay/auth/accepted`
+- **Rejected URL**: `https://yourdomain.com/ebay/auth/rejected`
+
+To configure OAuth for your eBay application:
+
+1. Log in to the [eBay Developer Portal](https://developer.ebay.com/)
+2. Go to your application settings
+3. Under **OAuth Redirect URLs**, add your callback URLs:
+   - For production: 
+     - `https://yourdomain.com/ebay/oauth/callback`
+     - `https://yourdomain.com/ebay/auth/accepted`
+     - `https://yourdomain.com/ebay/auth/rejected`
+   - For sandbox/testing: 
+     - `https://yourdomain.test/ebay/oauth/callback`
+     - `https://yourdomain.test/ebay/auth/accepted`
+     - `https://yourdomain.test/ebay/auth/rejected`
+4. Save your application settings
+
+#### Testing the OAuth Endpoints
+
+**Test the main OAuth callback:**
+
+```
+GET /ebay/oauth/callback?code=YOUR_AUTH_CODE
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "OAuth callback received successfully",
+  "code": "YOUR_AUTH_CODE",
+  "note": "Token exchange logic can be implemented here"
+}
+```
+
+**Test the accepted endpoint:**
+
+```
+GET /ebay/auth/accepted?code=YOUR_AUTH_CODE&state=YOUR_STATE
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "OAuth authorization accepted",
+  "code": "YOUR_AUTH_CODE",
+  "state": "YOUR_STATE",
+  "note": "Authorization processing logic can be implemented here"
+}
+```
+
+**Test the rejected endpoint:**
+
+```
+GET /ebay/auth/rejected?error=access_denied
+```
+
+Response:
+```json
+{
+  "success": false,
+  "message": "OAuth authorization rejected by user",
+  "error": "access_denied",
+  "error_description": "User declined the authorization request"
+}
+```
+
+**Note**: These endpoints are publicly accessible (no authentication required) so that eBay can redirect users back after authorization. The endpoints currently accept authorization codes and can be extended with token exchange and processing logic.
+
+### 4. Environment Variables (Optional)
 
 You can still use environment variables for default values. These are defined in `publishable/config/ebayconnector.php` and serve as fallbacks:
 

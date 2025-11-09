@@ -56,6 +56,15 @@ class EbayConnectorServiceProvider extends ServiceProvider
             require dirname(__DIR__) . '/Http/routes.php';
         });
         
+        // Load public routes (without admin middleware)
+        Route::group([
+            'middleware' => ['web']
+        ], function () {
+            Route::get('ebay/oauth/callback', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'callback'])->name('ebay.oauth.callback');
+            Route::get('ebay/auth/accepted', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'accepted'])->name('ebay.auth.accepted');
+            Route::get('ebay/auth/rejected', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'rejected'])->name('ebay.auth.rejected');
+        });
+        
         // Load views
         $this->loadViewsFrom(dirname(__DIR__, 2) . '/resources/views', 'ebayconnector');
         
