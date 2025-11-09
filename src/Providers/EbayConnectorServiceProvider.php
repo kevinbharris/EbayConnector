@@ -61,8 +61,11 @@ class EbayConnectorServiceProvider extends ServiceProvider
             'middleware' => ['web']
         ], function () {
             Route::get('ebay/oauth/callback', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'callback'])->name('ebay.oauth.callback');
-            Route::get('ebay/auth/accepted', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'accepted'])->name('ebay.auth.accepted');
-            Route::get('ebay/auth/rejected', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'rejected'])->name('ebay.auth.rejected');
+            // Updated routes: changed from ebay/auth/* to ebay/oauth/* for consistency
+            // Note: If you have custom OAuth flows using the old routes (ebay/auth/accepted or ebay/auth/rejected),
+            // please update your eBay Developer Portal redirect URIs to use the new endpoints below.
+            Route::get('ebay/oauth/accepted', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'accepted'])->name('ebay.oauth.accepted');
+            Route::get('ebay/oauth/rejected', [\KevinBHarris\EbayConnector\Http\Controllers\AuthController::class, 'rejected'])->name('ebay.oauth.rejected');
         });
         
         // Load views

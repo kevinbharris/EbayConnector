@@ -124,8 +124,8 @@ The package provides public OAuth endpoints for eBay authentication:
 
 **Available OAuth Endpoints**:
 - **Callback URL**: `https://yourdomain.com/ebay/oauth/callback`
-- **Accepted URL**: `https://yourdomain.com/ebay/auth/accepted`
-- **Rejected URL**: `https://yourdomain.com/ebay/auth/rejected`
+- **Accepted URL**: `https://yourdomain.com/ebay/oauth/accepted`
+- **Rejected URL**: `https://yourdomain.com/ebay/oauth/rejected`
 
 To configure OAuth for your eBay application:
 
@@ -134,13 +134,15 @@ To configure OAuth for your eBay application:
 3. Under **OAuth Redirect URLs**, add your callback URLs:
    - For production: 
      - `https://yourdomain.com/ebay/oauth/callback`
-     - `https://yourdomain.com/ebay/auth/accepted`
-     - `https://yourdomain.com/ebay/auth/rejected`
+     - `https://yourdomain.com/ebay/oauth/accepted`
+     - `https://yourdomain.com/ebay/oauth/rejected`
    - For sandbox/testing: 
      - `https://yourdomain.test/ebay/oauth/callback`
-     - `https://yourdomain.test/ebay/auth/accepted`
-     - `https://yourdomain.test/ebay/auth/rejected`
+     - `https://yourdomain.test/ebay/oauth/accepted`
+     - `https://yourdomain.test/ebay/oauth/rejected`
 4. Save your application settings
+
+**Note**: If you were previously using the old route URIs (`ebay/auth/accepted` and `ebay/auth/rejected`), please update your eBay Developer Portal redirect URLs to use the new URIs listed above.
 
 #### Testing the OAuth Endpoints
 
@@ -163,7 +165,7 @@ Response:
 **Test the accepted endpoint:**
 
 ```
-GET /ebay/auth/accepted?code=YOUR_AUTH_CODE&state=YOUR_STATE
+GET /ebay/oauth/accepted?code=YOUR_AUTH_CODE&state=YOUR_STATE
 ```
 
 Response:
@@ -180,7 +182,7 @@ Response:
 **Test the rejected endpoint:**
 
 ```
-GET /ebay/auth/rejected?error=access_denied
+GET /ebay/oauth/rejected?error=access_denied
 ```
 
 Response:
